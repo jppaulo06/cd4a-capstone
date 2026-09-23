@@ -1,0 +1,36 @@
+% !TeX program = pdflatex
+% !TeX root = main.tex
+\documentclass[a4paper,12pt,twoside,brazilian,english]{book}
+
+\usepackage{imegoodies}
+\usepackage[thesis]{imelooks}
+\graphicspath{{figures/}}
+\babeltags{br = brazilian, en = english}
+\addbibresource{references.bib}
+\input{metadata}
+
+\begin{document}
+\frontmatter
+\pagestyle{plain}
+\onehalfspacing
+\maketitle
+\pagenumbering{roman}
+\input{frontmatter/abstract}
+\input{frontmatter/resumo}
+\tableofcontents
+
+\mainmatter
+\pagestyle{mainmatter}
+\singlespacing
+\input{chapters/01-introduction}
+\input{chapters/02-background}
+\input{chapters/03-methodology}
+\input{chapters/04-cd4ai}
+\input{chapters/05-case-studies}
+\input{chapters/06-discussion}
+\input{chapters/07-conclusion}
+
+\backmatter
+\pagestyle{backmatter}
+\printbibliography[title={References},heading=bibintoc]
+\end{document}

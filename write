@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+project_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+session=monografia
+
+if [[ $# -gt 1 || ( $# -eq 1 && $1 != --detach ) ]]; then
+  printf 'Usage: %s [--detach]\n' "$0" >&2
+  exit 2
+fi
+
+command -v tmux >/dev/null
+command -v nvim >/dev/null
+
+if ! tmux has-session -t "=$session" 2>/dev/null; then
+  editor_window="$(tmux new-session -d -P -F '#{window_id}' \
+    -s "$session" -n thesis -c "$project_dir" 'exec nvim main.tex +VimtexCompile')"
+  tmux set-option -t "$session" @monografia_root "$project_dir"
+  tmux set-window-option -t "$editor_window" automatic-rename off
+  tmux new-window -d -t "$session:" -n shell -c "$project_dir"
+  tmux select-window -t "$editor_window"
+fi
+
+if [[ "$(tmux show-option -qv -t "$session" @monografia_root)" != "$project_dir" ]]; then
+  printf 'The monografia session belongs to another directory; leaving it unchanged.\n' >&2
+  exit 1
+fi
+
+if [[ ${1:-} == --detach ]]; then
+  printf 'Writing session ready: tmux attach -t %s\n' "$session"
+elif [[ -n ${TMUX:-} ]]; then
+  exec tmux switch-client -t "$session"
+else
+  exec tmux attach-session -t "$session"
+fi

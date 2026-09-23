@@ -1,0 +1,7 @@
+/build/
+.nvimlog
+*.swp
+*.swo
+*~
+/setup/backups/
+__pycache__/
