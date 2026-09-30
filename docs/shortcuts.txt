@@ -1,0 +1,82 @@
+MONOGRAPH WRITING SHORTCUTS
+==========================
+In this reference: j/k or arrows scroll; / searches; n finds the next match.
+Ctrl-a Tab returns to the previous tmux window. Ctrl-a w lists windows.
+q closes this reference window; ./write recreates it when needed.
+
+NEOVIM BASICS
+-------------
+Esc                 Return to Normal mode (commands and navigation)
+i / a               Insert before / after the cursor
+o / O               Insert a new line below / above
+:w Enter            Save; the live compiler updates the PDF
+:q Enter            Close the current editor window
+:wq Enter           Save and close the current editor window
+u / Ctrl-r          Undo / redo (Normal mode)
+/text Enter         Search forward; n / N find next / previous
+gg / G              Go to the beginning / end of the file
+Ctrl-d / Ctrl-u     Move down / up half a screen
+
+THESIS AND PDF (Normal mode)
+---------------------------
+Press Space, then l, then the last letter in sequence.
+
+Space l l           Start / stop continuous compilation
+Space l v           Open PDF / jump to the current source location
+Space l e           Show compilation errors
+Space l t           Browse the document's table of contents
+Space l i           Show VimTeX project and compiler information
+Ctrl + left-click   In Zathura: return to the source line and editor's tmux pane
+
+Completion and compilation use main.tex even when editing a chapter.
+The preview updates on save, not on each keystroke.
+
+CITATIONS AND COMPLETION (Insert mode)
+-------------------------------------
+\cite{ + Ctrl-Space Citation keys from references.bib
+\ref{ + Ctrl-Space  Document labels
+Ctrl-x Ctrl-o       Request VimTeX's native completion
+Ctrl-n / Ctrl-p     Select the next / previous completion
+Enter               Accept the selected completion
+Ctrl-e              Dismiss completion
+
+SNIPPETS (Insert / Select mode)
+------------------------------
+Type a trigger, then press Ctrl-j:
+  sec       Section heading and label
+  cite      Citation
+  ref       Cross-reference
+  fig       Figure, caption, and label
+  itemize   Bulleted list
+
+Ctrl-j              Expand a snippet / go to the next field
+Ctrl-k              Go to the previous field
+
+SPELLING (Normal mode)
+----------------------
+]s / [s             Next / previous misspelling
+z=                  Show spelling suggestions
+zg                  Add the word to your personal dictionary
+:setlocal spelllang=en_us    English spelling
+:setlocal spelllang=pt_br    Brazilian Portuguese spelling
+:setlocal nospell            Disable spelling for this window
+
+English is the default; resumo.tex uses Brazilian Portuguese.
+
+TMUX (your prefix is Ctrl-a)
+---------------------------
+Press and release Ctrl-a before the next key.
+
+Ctrl-a w            Choose thesis, shell, or shortcuts
+Ctrl-a Tab          Return to the previous window
+Ctrl-a -            Split with a zsh pane below
+Ctrl-a _            Split with a zsh pane beside the current pane
+Ctrl-h/j/k/l        Move between panes/editor splits in Neovim's Normal mode
+Ctrl-a d            Detach; Neovim and compilation keep running
+./write             Reattach to the writing session
+
+DESKTOP LAYOUT
+--------------
+Super+Left          Tile Alacritty on the left
+Super+Right         Tile Zathura on the right
+On Wayland, switch focus back to Alacritty if a PDF jump leaves focus in Zathura.

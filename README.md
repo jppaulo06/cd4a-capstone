@@ -13,9 +13,17 @@ From this directory:
 ```
 
 This creates or reuses the `monografia` tmux session, with a `thesis` window
-running Neovim and a `shell` window in the project directory. New sessions start
+running Neovim, a `shell` window running zsh in the project directory, and a
+`shortcuts` window containing a scrollable command reference. New sessions start
 continuous compilation and open Zathura automatically. It also works
 from inside an existing tmux session. To write without tmux, use `nvim main.tex`.
+
+The launcher is a Bash script; run it as `./write` from your usual zsh prompt.
+It sets zsh as the writing session's default shell for new windows and panes.
+Existing shell processes stay open. Rerunning `./write` adds the shortcuts window
+to an existing session without duplicating it. Open it with **Ctrl-a w**, choose
+`shortcuts`, and use **Ctrl-a Tab** to return. Within the reference, `j`/`k` scroll
+and `/` searches. Its source is [docs/shortcuts.txt](docs/shortcuts.txt).
 
 In Normal mode, **Space l l** toggles continuous compilation; use it to start
 when opening Neovim directly, or to restart a stopped compiler in a reused
@@ -66,7 +74,7 @@ Your current tmux prefix is **Ctrl-a**. Press and release it before the next key
 
 | Action | Keys |
 | --- | --- |
-| Choose thesis/shell window | `Ctrl-a w` |
+| Choose thesis/shell/shortcuts window | `Ctrl-a w` |
 | Return to previous window | `Ctrl-a Tab` |
 | Split with a shell below | `Ctrl-a -` |
 | Split with a shell beside the editor | `Ctrl-a _` |

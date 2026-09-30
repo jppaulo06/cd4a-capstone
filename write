@@ -11,19 +11,40 @@ fi
 
 command -v tmux >/dev/null
 command -v nvim >/dev/null
+command -v less >/dev/null
+zsh_path="$(command -v zsh)"
+created_session=false
 
 if ! tmux has-session -t "=$session" 2>/dev/null; then
   editor_window="$(tmux new-session -d -P -F '#{window_id}' \
     -s "$session" -n thesis -c "$project_dir" 'exec nvim main.tex +VimtexCompile')"
   tmux set-option -t "$session" @monografia_root "$project_dir"
   tmux set-window-option -t "$editor_window" automatic-rename off
-  tmux new-window -d -t "$session:" -n shell -c "$project_dir"
-  tmux select-window -t "$editor_window"
+  created_session=true
 fi
 
 if [[ "$(tmux show-option -qv -t "$session" @monografia_root)" != "$project_dir" ]]; then
   printf 'The monografia session belongs to another directory; leaving it unchanged.\n' >&2
   exit 1
+fi
+
+# The launcher uses Bash, but interactive windows and new panes use zsh.
+# These settings apply only to this session, including when it already exists.
+tmux set-option -t "$session" default-shell "$zsh_path"
+tmux set-environment -t "$session" SHELL "$zsh_path"
+
+if "$created_session"; then
+  shell_window="$(tmux new-window -d -P -F '#{window_id}' \
+    -t "$session:" -n shell -c "$project_dir" "$zsh_path" -l)"
+  tmux set-window-option -t "$shell_window" automatic-rename off
+  tmux select-window -t "$editor_window"
+fi
+
+if ! tmux list-windows -t "$session" -F '#{window_name}' | grep -Fxq shortcuts; then
+  shortcuts_window="$(tmux new-window -d -P -F '#{window_id}' \
+    -t "$session:" -n shortcuts -c "$project_dir" \
+    less -+F -- docs/shortcuts.txt)"
+  tmux set-window-option -t "$shortcuts_window" automatic-rename off
 fi
 
 if [[ ${1:-} == --detach ]]; then
