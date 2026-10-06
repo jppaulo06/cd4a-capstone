@@ -2,7 +2,190 @@
 \chapter{The CD4AI Pattern}
 \label{chap:cd4ai}
 
-\textbf{Draft outline.} Present the context, problem, forces, solution,
-dynamics, consequences, and limitations of the pattern.
+\textbf{Draft outline.} This chapter will present CD4AI and explain how testing,
+monitoring, and curation connect observed failures to future regression tests.
+The notes below are writing prompts to be replaced as each section develops.
 
-% Existing material: ../tcc-docs/README.md and ../miniplop/sections/.
+% Primary working description: ../tcc-docs/README.md.
+% Earlier formulation: ../miniplop/sections/.
+% Reconcile earlier claims with the current description: the pattern does not
+% prescribe a fixed pass threshold or guarantee that failures never recur.
+
+\section{Intent, Context, and Problem}
+\label{sec:cd4ai-context}
+
+\begin{itemize}
+  \item State the intent: support frequent delivery while preserving established
+    behavior in AI-enabled systems.
+  \item Describe the context: changes to prompts, models, tools, and workflows
+    can affect behavior beyond the feature being developed.
+  \item Explain why initial evaluation datasets cannot anticipate every
+    interaction that will emerge during use.
+  \item Formulate the problem that the pattern addresses and delimit its scope.
+\end{itemize}
+
+\section{Forces}
+\label{sec:cd4ai-forces}
+
+\noindent\emph{Working formulation: the following forces will be revisited
+as the case studies are developed.}
+
+Testability, robustness, and evolvability are desired qualities that can
+reinforce one another. Testability helps teams assess whether a proposed change
+preserves expected behavior before deployment. Robustness concerns the
+application's ability to maintain acceptable behavior under varying conditions,
+while evolvability concerns its ability to accommodate change. The evaluation
+suite must also evolve to remain useful as the application changes.
+
+These qualities need not oppose one another in every pairwise comparison.
+The forces considered here instead express tensions between desired outcomes
+and the constraints on achieving them. The pattern aims to address three
+such tensions:
+
+\begin{itemize}
+  \item \textbf{Confidence in changes and delivery speed:} teams need evidence
+    that changes preserve expected behavior, but running more extensive
+    evaluations requires execution time and maintenance effort. The validation
+    process must fit the time and resources available for frequent delivery.
+  \item \textbf{Failure discovery and review capacity:} teams need to discover
+    failures beyond those covered by existing tests, but collecting more
+    candidate interactions increases the curation workload. Broad discovery
+    must be balanced with the capacity to review candidates and prepare useful
+    regression cases.
+  \item \textbf{Behavior preservation and adaptation:} historical regression
+    cases help check established behavior, but changing requirements can make
+    some expectations outdated. Teams must distinguish unintended regressions
+    from intended changes and maintain the suite accordingly.
+\end{itemize}
+
+Testing, monitoring, and curation work together to address these tensions.
+Testing supplies evidence about proposed changes, monitoring supplies
+interactions for investigation, and curation determines which interactions
+should become regression cases and what behavior those cases should check.
+The cycle does not remove the costs or trade-offs; its implementation must
+establish how these responsibilities fit the team's delivery process.
+
+% Writing notes:
+% Keep the desired qualities distinct from the concrete tensions above.
+% Do not claim that greater testability necessarily lowers robustness or
+% evolvability. Better testing can support both.
+% Validate this working formulation against Chapter 5: look for evidence of
+% evaluation cost, candidate selection, review workload, and changes to expected
+% behavior. Do not present these as findings before examining the evidence.
+% Explain how the stages address the tensions without forcing a one-to-one
+% correspondence between a stage and a force. Connected paragraphs are enough;
+% pairwise-comparison subsections are not necessary.
+% Pattern-writing guidance discussed during review:
+% https://www.hillside.net/index.php/a-pattern-language-for-pattern-writing
+% Add a formal citation if this guidance is used in the final argument.
+
+\section{Overview of the Feedback Loop}
+\label{sec:cd4ai-overview}
+
+\begin{itemize}
+  \item Introduce the three stages and their responsibilities before detailing
+    individual techniques.
+  \item Add a diagram: testing informs deployment; monitoring supplies candidate
+    interactions; curation prepares regression cases that return to testing.
+  \item Identify the information passed between stages and explain why collecting
+    logs or running evaluations alone does not establish the complete cycle.
+\end{itemize}
+
+\section{Testing and Evaluation}
+\label{sec:cd4ai-testing}
+
+\subsection{Test Cases and Expected Behavior}
+\begin{itemize}
+  \item Explain how cases prepared for expected behavior complement regression
+    cases derived from previously observed failures.
+  \item Describe the input, relevant context, expected behavior, and evaluation
+    criterion needed to make a retained case useful.
+\end{itemize}
+
+\subsection{Evaluation Criteria and Variability}
+\begin{itemize}
+  \item Clarify how tests and evaluations are used in this chapter, drawing on
+    the terminology introduced in Chapter~\ref{chap:background}.
+  \item Discuss possible checks and evaluators, including their limitations when
+    several outputs are acceptable or responses vary between runs.
+\end{itemize}
+
+\subsection{Integration with the Delivery Pipeline}
+\begin{itemize}
+  \item Explain when evaluations run and how their results inform delivery.
+  \item Separate the pattern's responsibility from implementation choices such
+    as metrics, acceptance thresholds, and treatment of critical failures.
+\end{itemize}
+
+\section{Monitoring}
+\label{sec:cd4ai-monitoring}
+
+\subsection{Observing Interactions}
+\begin{itemize}
+  \item Describe what information can help reconstruct behavior during use:
+    inputs, outputs, retrieved context, tool calls, and user feedback.
+  \item Explain how the available observations constrain subsequent review.
+\end{itemize}
+
+\subsection{Selecting Candidates for Review}
+\begin{itemize}
+  \item Describe candidate signals, such as negative feedback, unexpected tool
+    behavior, and guardrail violations, alongside sampling of interactions.
+  \item Explain the trade-off between broad discovery and review effort, and
+    distinguish a suspected failure from a confirmed defect.
+\end{itemize}
+
+\section{Curation}
+\label{sec:cd4ai-curation}
+
+\subsection{Reviewing Candidate Interactions}
+\begin{itemize}
+  \item Explain how human review, AI-assisted review, or a combination can assess
+    selected interactions and distinguish defects from noise.
+  \item Describe the role of expected behavior and review rationales; discuss
+    uncertain judgments and evaluator limitations.
+\end{itemize}
+
+\subsection{Preparing Regression Cases}
+\begin{itemize}
+  \item Explain how a confirmed defect becomes a reusable input or scenario with
+    an expected behavior and an evaluation criterion.
+  \item Discuss which context must be retained and how cases are selected and
+    maintained as the suite grows.
+\end{itemize}
+
+\subsection{Returning Cases to Testing}
+\begin{itemize}
+  \item Make the handoff explicit: recording a review does not by itself add a
+    case to the regression suite.
+  \item Describe manual and automated ways to retain the case, evaluate a fix,
+    and check subsequent changes.
+\end{itemize}
+
+\section{Dynamics: Following a Failure through the Cycle}
+\label{sec:cd4ai-dynamics}
+
+\begin{itemize}
+  \item Develop one clearly labeled illustrative example that follows an
+    interaction from observation to review, a regression case, and evaluation
+    of a subsequent change.
+  \item Show the information and decisions at each transition, including where
+    human intervention may be needed.
+  \item Keep the example independent of a specific platform; reserve the
+    evidence from concrete cases for Chapter~\ref{chap:case-studies}.
+\end{itemize}
+
+\section{Consequences and Limitations}
+\label{sec:cd4ai-consequences}
+
+\begin{itemize}
+  \item Discuss the intended benefit of a regression suite informed by actual
+    use, separating expected benefits from measured outcomes.
+  \item Discuss the costs of observation, review, and maintaining and running
+    the growing suite.
+  \item Explain limits arising from unobserved interactions, missed signals,
+    reviewer errors, and variable behavior. Avoid guarantees of complete
+    coverage or prevention of every recurrence.
+  \item Introduce the case studies as an examination of how these responsibilities
+    and connections appear in different systems and workflows.
+\end{itemize}

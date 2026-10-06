@@ -2,8 +2,94 @@
 \chapter{Case Studies}
 \label{chap:case-studies}
 
-\textbf{Draft outline.} Present the evidence from Divination, DeepEval,
-Braintrust, and MLflow. Distinguish implemented behavior from documentation
-and proposed extensions.
+\textbf{Draft outline.} This chapter will adapt the cases already documented
+in the project repository. Each case will describe its context, evidence, the
+three CD4AI stages, and the connections and limitations of the feedback loop.
 
-% Existing analyses and archived sources: ../tcc-docs/cases/.
+% Existing analyses: ../tcc-docs/cases/<case-name>/README.md.
+% Source snapshots and revision indexes: each case's assets/sources/README.md.
+% Figure provenance and adaptation details: each case's assets/README.md.
+% Add bibliography entries and citations when adapting the case narratives.
+
+\section{How to Read the Cases}
+\label{sec:cases-overview}
+
+\begin{itemize}
+  \item Briefly recall the analysis procedure from Chapter~\ref{chap:methodology}.
+  \item Distinguish source inspection, documented capabilities, illustrative
+    screenshots, and executed observations. Record source dates and revisions.
+  \item Explain that mapping a workflow to CD4AI does not imply that its
+    maintainers explicitly adopted the pattern.
+\end{itemize}
+
+\section{Divination}
+\label{sec:case-divination}
+% Source: ../tcc-docs/cases/divination/README.md.
+
+\subsection{Context and Evidence}
+\noindent\emph{To develop:} Introduce the Dungeons \& Dragons RAG assistant,
+the inspected implementation revision, and the scope of the local work.
+Identify screenshots that use synthetic demonstration data.
+
+\subsection{Testing, Monitoring, and Curation}
+\noindent\emph{To develop:} Map the evaluation suites, stored interactions,
+candidate signals, and human review to the three stages.
+
+\subsection{Connections and Limitations}
+\noindent\emph{To develop:} Explain the documented manual path from a reviewed
+defect to a versioned evaluation case. Distinguish available implementation
+and instructions from any cycle actually executed during the project.
+
+\section{DeepEval and Confident AI}
+\label{sec:case-deepeval}
+% Source: ../tcc-docs/cases/deepeval/README.md.
+
+\subsection{Context and Evidence}
+\noindent\emph{To develop:} Distinguish the evaluation framework from the
+associated platform and identify the documentation and source files analyzed.
+
+\subsection{Testing, Monitoring, and Curation}
+\noindent\emph{To develop:} Explain the documented development--production
+workflow and its return path from failing conversations to evaluation datasets.
+
+\subsection{Connections and Limitations}
+\noindent\emph{To develop:} Explain the interpretation of curation in that
+return path and the workflow a team would need to assemble. State that the
+existing analysis did not execute the cycle on the platform.
+
+\section{Braintrust}
+\label{sec:case-braintrust}
+% Source: ../tcc-docs/cases/braintrust/README.md.
+
+\subsection{Context and Evidence}
+\noindent\emph{To develop:} Introduce the documented workflow and the provenance
+of its published interface examples.
+
+\subsection{Testing, Monitoring, and Curation}
+\noindent\emph{To develop:} Map experiments, logs, human annotation, and dataset
+creation to the CD4AI stages, highlighting the explicit review activity.
+
+\subsection{Connections and Limitations}
+\noindent\emph{To develop:} Describe how selected traces and expected behavior
+can become dataset entries. Clarify that the published screenshots show
+separate examples, rather than one cycle executed for this study.
+
+\section{MLflow}
+\label{sec:case-mlflow}
+% Source: ../tcc-docs/cases/mlflow/README.md.
+
+\subsection{Context and Evidence}
+\noindent\emph{To develop:} Introduce the documented regression-testing workflow
+and identify the dated sources used in the analysis.
+
+\subsection{Testing, Monitoring, and Curation}
+\noindent\emph{To develop:} Map tracing, feedback, review queues, evaluation
+datasets, and regression tests to the CD4AI cycle.
+
+\subsection{Connections and Limitations}
+\noindent\emph{To develop:} Explain the return path from an observed failure to
+a retained input and expected behavior. State that the existing analysis
+examines documentation and did not run an MLflow server or evaluation.
+
+% Cross-case synthesis and implications for pattern refinement belong in
+% Chapter 6 (Discussion), after the individual case narratives are developed.
