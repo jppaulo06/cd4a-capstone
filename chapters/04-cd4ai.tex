@@ -2,35 +2,57 @@
 \chapter{The CD4AI Pattern}
 \label{chap:cd4ai}
 
-\textbf{Draft outline.} This chapter will present CD4AI and explain how testing,
-monitoring, and curation connect observed failures to future regression tests.
-The notes below are writing prompts to be replaced as each section develops.
+CD4AI is a continuous delivery pattern that addresses the following problem:
+\enquote{How can teams turn failures observed during the use of AI-enabled
+systems into regression tests that support subsequent changes?}
+This chapter presents the pattern and its feedback loop.
+Chapter~\ref{chap:case-studies} examines how its stages appear in selected
+systems and documented workflows.
 
-% Primary working description: ../tcc-docs/README.md.
-% Earlier formulation: ../miniplop/sections/.
-% Reconcile earlier claims with the current description: the pattern does not
-% prescribe a fixed pass threshold or guarantee that failures never recur.
-
-\section{Intent, Context, and Problem}
+\section{Context, Problem, and Intent}
 \label{sec:cd4ai-context}
 
-% I think we must have this before showing what the pattern is so we can show
-% the Problem. Else the problem will be unclear, and the reader might not
-% understand what we are talking about.
+% Context
 
-% I think I should start talking about agile environments, continuous delivery
-% pipelines, citing "continous delivery" maybe. I could tell the "history"
-% of me working inside a startup that is quite agile.
+Foundation models are trained on broad data at scale and can be adapted to
+a range of downstream tasks~\cite{Bommasani:FoundationModels:2021}.
+Applications built around language foundation models can change their behavior
+through modifications to prompts, retrieved context, tools, and orchestration,
+without necessarily retraining the underlying
+model~\cite{Schluntz:BuildingEffectiveAgents:2024}.
+By avoiding a model-training cycle for such changes, application teams can
+shorten the implementation cycle and introduce behavioral changes within their
+ordinary software development workflow.
 
-\begin{itemize}
-  \item State the intent: support frequent delivery while preserving established
-    behavior in AI-enabled systems.
-  \item Describe the context: changes to prompts, models, tools, and workflows
-    can affect behavior beyond the feature being developed.
-  \item Explain why initial evaluation datasets cannot anticipate every
-    interaction that will emerge during use.
-  \item Formulate the problem that the pattern addresses and delimit its scope.
-\end{itemize}
+In this setting, evaluating AI-dependent behavior becomes part of the
+application team's delivery responsibilities, even when the team does not
+develop or train the underlying model. A change that is quick to implement
+may still require substantial evaluation. The resulting challenge is to assess
+its effects on established behavior while incorporating failures discovered
+during use into future evaluations.
+
+% Optional motivation: add a concrete observation from the startup experience,
+% distinguishing personal observations from claims about development practices
+% in general. Keep implementation details for the relevant case study.
+
+% Problem
+
+Initial evaluations cannot be assumed to cover every interaction that will
+emerge during use. Teams therefore need a process for identifying candidate
+failures, reviewing them, and turning confirmed defects into useful regression
+cases. Collecting interactions alone does not establish this connection: the
+cases must capture expected behavior and return to the evaluation suite used
+to assess subsequent changes.
+
+% Intent
+
+CD4AI aims to support frequent delivery while preserving established behavior
+by connecting testing, monitoring, and curation in a recurring feedback loop.
+Although applications built around language foundation models motivate the
+discussion here, the pattern is described in terms of these responsibilities,
+rather than a particular model or evaluation framework. Its intent is to make
+observed failures inform future validation, without guaranteeing that every
+failure will be discovered or that a previously observed defect will never recur.
 
 \section{Forces}
 \label{sec:cd4ai-forces}
@@ -90,7 +112,8 @@ establish how these responsibilities fit the team's delivery process.
 \section{Overview of the Feedback Loop}
 \label{sec:cd4ai-overview}
 
-CD4AI proposes three stages to solve the problem and balance the forces: testing, monitoring, and curation.
+CD4AI proposes three stages to solve the problem and balance the forces:
+testing, monitoring, and curation.
 
 % Here we put the drawing
 
